@@ -15,12 +15,12 @@ public class Roomba implements Directions {
 
     }
 
-    // Declared here so it is visible in all the methods!
+    
     private Robot roomba;
 
-    // You will need to add many variables!!
-    private int largest_pile = 0;
-    private int totalBeepers = 0;
+    
+    int largest_pile = 0;
+    int totalBeepers = 0;
 
     public int cleanRoom(String worldName, int startX, int startY) {
 
@@ -30,8 +30,7 @@ public class Roomba implements Directions {
         World.readWorld(worldName);
         World.setVisible(true);
 		World.setDelay(1);
-        // This section will have all the logic that takes the Robot to every location
-        // and cleans up all piles of beepers.
+      
         boolean done = false;
         while (!done) {
             clearAndMove();
@@ -64,7 +63,7 @@ public class Roomba implements Directions {
         return totalBeepers;
     }
 
-    private void clearAndMove() {
+   public void clearAndMove() {
         int beepers = 0;
         while (roomba.nextToABeeper()) {
             roomba.pickBeeper();
@@ -90,11 +89,8 @@ public class Roomba implements Directions {
     }
 
   public void turnRight(){
-		int i=0;
-		while(i< 3)
-		{
-			roomba.turnLeft();
-			i = i+1;
-		}
+		roomba.turnLeft();
+        roomba.turnLeft();
+        roomba.turnLeft();
     }
 }
