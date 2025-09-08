@@ -4,88 +4,97 @@ import kareltherobot.*;
 
 public class Roomba implements Directions {
 
-	// Main method to make this self-contained
-	public static void main(String[] args) {
-		// LEAVE THIS ALONE!!!!!!
-		String worldName = "robot/basicRoom.wld";
+    // Main method to make this self-contained
+    public static void main(String[] args) {
+        // LEAVE THIS ALONE!!!!!!
+        String worldName = "robot/basicRoom.wld";
 
-		Roomba cleaner = new Roomba();
-		int totalBeepers = cleaner.cleanRoom(worldName, 7, 6);
-		System.out.println("Roomba cleaned up a total of " + totalBeepers + " beepers.");
+        Roomba cleaner = new Roomba();
+        int totalBeepers = cleaner.cleanRoom(worldName, 7, 6);
+        System.out.println("Roomba cleaned up a total of " + totalBeepers + " beepers.");
 
-	}
+    }
 
-	// declared here so it is visible in all the methods!
-	private Robot roomba = new Robot(7, 14, West, 0);
+    // Declared here so it is visible in all the methods!
+    private Robot roomba;
 
-	// You will need to add many variables!!
+    // You will need to add many variables!!
+    private int largest_pile = 0;
+    private int totalBeepers = 0;
 
+    public int cleanRoom(String worldName, int startX, int startY) {
 
-	public int cleanRoom(String worldName, int startX, int startY) {
+        
+        roomba = new Robot(7, 13, West, 0);
 
-		// A new Robot should be constructed and assigned to the global (instance) variable named roomba that is declared above.
-        // Make sure it starts at startX and startY location.
+        World.readWorld(worldName);
+        World.setVisible(true);
+		World.setDelay(1);
+        // This section will have all the logic that takes the Robot to every location
+        // and cleans up all piles of beepers.
+        boolean done = false;
+        while (!done) {
+            clearAndMove();
 
-		World.readWorld(worldName);
-		World.setVisible(true);
-		//World.setDelay(5);
-		
+        
+            if (!roomba.frontIsClear()) {
+                if (roomba.facingWest()) {
+                    turnRight(); // Face North
+                    if (roomba.frontIsClear()) {
+                        roomba.move();
+                        turnRight(); // Face East
+                    } else {
 
-		/** This section will have all the logic that takes the Robot to every location
-		 * and cleans up all piles of beepers. Think about ways you can break this
-		 * large, complex task into smaller, easier to solve problems.
-		 */
+                        done = true;
+                    }
+                } 
+                else if (roomba.facingEast()) {
+                    roomba.turnLeft(); 
+                    if (roomba.frontIsClear()) {
+                        roomba.move();
+                        roomba.turnLeft(); 
+                    } else {
+                        done = true;
+                    }
+                }
+            }
+        }
+        
+        roomba.turnOff();
+        return totalBeepers;
+    }
 
-		// the line below causes a null pointer exception
-		// what is that and why are we getting it?
-		
+    private void clearAndMove() {
+        int beepers = 0;
+        while (roomba.nextToABeeper()) {
+            roomba.pickBeeper();
+            totalBeepers++;
+            beepers++;
+        }
+        if (beepers > largest_pile) {
+            largest_pile = beepers;
+        }
 
-		roomba.move();
-		roomba.move();
-		
-		
-			 
+        while (roomba.frontIsClear()) {
+            roomba.move();
+            beepers = 0;
+            while (roomba.nextToABeeper()) {
+                roomba.pickBeeper();
+                totalBeepers++;
+                beepers++;
+            }
+            if (beepers > largest_pile) {
+                largest_pile = beepers;
+            }
+        }
+    }
 
-		int totalBeepers = 0;
-		while(totalBeepers<6){
-			
-
-			if(World.checkBeeper(roomba.street(), roomba.avenue())){
-				
-				roomba.pickBeeper();
-				totalBeepers++;
-			}
-			else{
-				roomba.move();
-			}
-
-		}
-
-		turnRight();
-		roomba.move();
-		while(totalBeepers<13){
-			roomba.pickBeeper();
-			totalBeepers++;
-		}
-
-		turnRight();
-		roomba.move();
-		roomba.move();
-
- // Need to move this somewhere else.
-        // This method should return the total number of beepers cleaned up.
-		return totalBeepers;
-		
-
-
-	}
-
-	public void turnRight(){
+  public void turnRight(){
 		int i=0;
 		while(i< 3)
 		{
 			roomba.turnLeft();
 			i = i+1;
 		}
-	}
+    }
 }
