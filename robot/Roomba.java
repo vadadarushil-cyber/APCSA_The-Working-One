@@ -29,7 +29,7 @@ public class Roomba implements Directions {
 
         World.readWorld(worldName);
         World.setVisible(true);
-		//World.setDelay(1);
+		World.setDelay(1);
 
 
 
@@ -96,9 +96,11 @@ public class Roomba implements Directions {
         }
     }
 
-  public void turnRight(){
-        for (j = 1; j<1 ; j++){
-            roomba.turnLeft();
-        }
-    }
+  public void turnRight() {
+   int i = 0; 
+   while (i < 3) { 
+      roomba.turnLeft(); 
+      i++; 
+   }
+}
 }
