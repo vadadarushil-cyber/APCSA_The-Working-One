@@ -29,19 +29,27 @@ public class Roomba implements Directions {
 
         World.readWorld(worldName);
         World.setVisible(true);
-		World.setDelay(1);
-      
+		//World.setDelay(1);
+
+
+
+
+
+
+        
         boolean done = false;
+        //while (!done) means "keep executing the code inside this loop as long as the boolean variable done is false
+        //This is the logical NOT operator. It inverts a boolean value. So, if done is true, !done evaluates to false. If done is false, !done evaluates to true.
         while (!done) {
             clearAndMove();
 
         
             if (!roomba.frontIsClear()) {
                 if (roomba.facingWest()) {
-                    turnRight(); // Face North
+                    turnRight(); 
                     if (roomba.frontIsClear()) {
                         roomba.move();
-                        turnRight(); // Face East
+                        turnRight(); 
                     } else {
 
                         done = true;
@@ -59,7 +67,7 @@ public class Roomba implements Directions {
             }
         }
         
-        roomba.turnOff();
+        //roomba.turnOff();
         return totalBeepers;
     }
 
@@ -89,8 +97,8 @@ public class Roomba implements Directions {
     }
 
   public void turnRight(){
-		roomba.turnLeft();
-        roomba.turnLeft();
-        roomba.turnLeft();
+        for (j = 1; j<1 ; j++){
+            roomba.turnLeft();
+        }
     }
 }
