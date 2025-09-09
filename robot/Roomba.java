@@ -37,10 +37,10 @@ public class Roomba implements Directions {
 
 
         
-        boolean done = false;
+        boolean done = true;
         //while (!done) means "keep executing the code inside this loop as long as the boolean variable done is false
         //This is the logical NOT operator. It inverts a boolean value. So, if done is true, !done evaluates to false. If done is false, !done evaluates to true.
-        while (!done) {
+        while (done) {
             clearAndMove();
 
         
