@@ -17,7 +17,7 @@ public class Roomba implements Directions {
     double largest_pile_x = 0;
     double largest_pile_y = 0;
     double totalBeepers = 0;
-    double totalArea = 2; 
+    double totalArea = 2;
 
     public void cleanRoom(String worldName) {
         roomba = new Robot(26, 149, West, 0);
@@ -32,16 +32,16 @@ public class Roomba implements Directions {
         while (!done) {
             if (roomba.frontIsClear()) {
                 roomba.move();
-                totalArea++; 
+                totalArea++;
                 clearCurrentPile();
-            } 
-            
+            }
+
             else {
                 if (roomba.facingWest()) {
                     turnRight();
                     if (roomba.frontIsClear()) {
                         roomba.move();
-                        totalArea++; 
+                        totalArea++;
                         turnRight();
                         clearCurrentPile();
                     } else {
@@ -51,7 +51,7 @@ public class Roomba implements Directions {
                     roomba.turnLeft();
                     if (roomba.frontIsClear()) {
                         roomba.move();
-                        totalArea++; 
+                        totalArea++;
                         roomba.turnLeft();
                         clearCurrentPile();
                     } else {
@@ -83,22 +83,23 @@ public class Roomba implements Directions {
         System.out.println("Percent dirty (piles/area): " + String.format("%.2f", percent_dirty) + "%");
         System.out.println("-----------------------");
     }
+
     public void clearCurrentPile() {
         int pileBeepers = 0;
         if (roomba.nextToABeeper()) {
             total_piles++;
-            
+
             while (roomba.nextToABeeper()) {
                 roomba.pickBeeper();
                 pileBeepers++;
             }
-    
+
             if (pileBeepers > largest_pile) {
                 largest_pile = pileBeepers;
                 largest_pile_x = roomba.street();
                 largest_pile_y = roomba.avenue();
             }
-    
+
             totalBeepers += pileBeepers;
         }
     }
