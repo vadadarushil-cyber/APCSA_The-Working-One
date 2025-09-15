@@ -3,10 +3,7 @@ package robot;
 import kareltherobot.*;
 
 public class Roomba implements Directions {
-
-    // Main method to make this self-contained
     public static void main(String[] args) {
-        // LEAVE THIS ALONE!!!!!!
         String worldName = "robot/finalTestWorld2024.wld";
 
         Roomba cleaner = new Roomba();
@@ -23,7 +20,6 @@ public class Roomba implements Directions {
     double totalArea = 2; 
 
     public void cleanRoom(String worldName) {
-        // Robot's initial state is now hard-coded as requested.
         roomba = new Robot(26, 149, West, 0);
 
         World.readWorld(worldName);
@@ -34,7 +30,6 @@ public class Roomba implements Directions {
         clearCurrentPile();
 
         while (!done) {
-            // First, try to move forward
             if (roomba.frontIsClear()) {
                 roomba.move();
                 totalArea++; 
