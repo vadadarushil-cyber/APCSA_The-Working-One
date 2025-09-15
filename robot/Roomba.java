@@ -15,12 +15,12 @@ public class Roomba implements Directions {
 
     private Robot roomba;
 
-    int total_piles = 0;
-    int largest_pile = 0;
-    int largest_pile_x = 0;
-    int largest_pile_y = 0;
-    int totalBeepers = 0;
-    int totalArea = 0;
+    double total_piles = 0;
+    double largest_pile = 0;
+    double largest_pile_x = 0;
+    double largest_pile_y = 0;
+    double totalBeepers = 0;
+    double totalArea = 2; 
 
     public void cleanRoom(String worldName) {
         // Robot's initial state is now hard-coded as requested.
@@ -31,16 +31,24 @@ public class Roomba implements Directions {
         World.setDelay(0);
 
         boolean done = false;
+        clearCurrentPile();
 
         while (!done) {
-            clearAndMove();
-
-            if (!roomba.frontIsClear()) {
+            // First, try to move forward
+            if (roomba.frontIsClear()) {
+                roomba.move();
+                totalArea++; 
+                clearCurrentPile();
+            } 
+            
+            else {
                 if (roomba.facingWest()) {
                     turnRight();
                     if (roomba.frontIsClear()) {
                         roomba.move();
+                        totalArea++; 
                         turnRight();
+                        clearCurrentPile();
                     } else {
                         done = true;
                     }
@@ -48,7 +56,9 @@ public class Roomba implements Directions {
                     roomba.turnLeft();
                     if (roomba.frontIsClear()) {
                         roomba.move();
+                        totalArea++; 
                         roomba.turnLeft();
+                        clearCurrentPile();
                     } else {
                         done = true;
                     }
@@ -78,36 +88,23 @@ public class Roomba implements Directions {
         System.out.println("Percent dirty (piles/area): " + String.format("%.2f", percent_dirty) + "%");
         System.out.println("-----------------------");
     }
-
-    public void clearAndMove() {
-        // First, check for beepers at the current location
+    public void clearCurrentPile() {
         int pileBeepers = 0;
         if (roomba.nextToABeeper()) {
             total_piles++;
-        }
-
-        while (roomba.nextToABeeper()) {
-            roomba.pickBeeper();
-            pileBeepers++;
-        }
-
-        if (pileBeepers > largest_pile) {
-            largest_pile = pileBeepers;
-            largest_pile_x = roomba.street();
-            largest_pile_y = roomba.avenue();
-        }
-
-        totalBeepers += pileBeepers;
-
-        // Then, move and check for beepers at each new location
-        if (roomba.frontIsClear()) {
-            roomba.move();
-            totalArea++;
             
-            // Check for a new pile at the new location
-            if (roomba.nextToABeeper()) {
-                clearAndMove(); // Recursively call to clean the new pile
+            while (roomba.nextToABeeper()) {
+                roomba.pickBeeper();
+                pileBeepers++;
             }
+    
+            if (pileBeepers > largest_pile) {
+                largest_pile = pileBeepers;
+                largest_pile_x = roomba.street();
+                largest_pile_y = roomba.avenue();
+            }
+    
+            totalBeepers += pileBeepers;
         }
     }
 
