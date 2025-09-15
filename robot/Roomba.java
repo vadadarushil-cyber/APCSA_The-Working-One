@@ -73,7 +73,6 @@ public class Roomba implements Directions {
             percent_dirty = ((double) total_piles / totalArea) * 100;
         }
 
-        System.out.println("\n--- Cleaning Report ---");
         System.out.println("Area of the room: " + totalArea + " spaces");
         System.out.println("Number of piles: " + total_piles);
         System.out.println("Total number of beepers collected: " + totalBeepers);
@@ -81,7 +80,6 @@ public class Roomba implements Directions {
         System.out.println("Location of the largest pile: (" + largest_pile_x + ", " + largest_pile_y + ")");
         System.out.println("Average pile size: " + String.format("%.2f", average_pile_size) + " beepers");
         System.out.println("Percent dirty (piles/area): " + String.format("%.2f", percent_dirty) + "%");
-        System.out.println("-----------------------");
     }
 
     public void clearCurrentPile() {
