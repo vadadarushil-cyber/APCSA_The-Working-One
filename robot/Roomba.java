@@ -63,14 +63,14 @@ public class Roomba implements Directions {
 
         roomba.turnOff();
 
-        double average_pile_size = 0.0;
+        double average_pile_size = 0;
         if (total_piles > 0) {
-            average_pile_size = (double) totalBeepers / total_piles;
+            average_pile_size = totalBeepers / total_piles;
         }
 
-        double percent_dirty = 0.0;
+        double percent_dirty = 0;
         if (totalArea > 0) {
-            percent_dirty = ((double) total_piles / totalArea) * 100;
+            percent_dirty = ( total_piles / totalArea) * 100;
         }
 
         System.out.println("Area of the room: " + totalArea + " spaces");
@@ -78,12 +78,12 @@ public class Roomba implements Directions {
         System.out.println("Total number of beepers collected: " + totalBeepers);
         System.out.println("Largest pile of beepers: " + largest_pile);
         System.out.println("Location of the largest pile: (" + largest_pile_x + ", " + largest_pile_y + ")");
-        System.out.println("Average pile size: " + String.format("%.2f", average_pile_size) + " beepers");
-        System.out.println("Percent dirty (piles/area): " + String.format("%.2f", percent_dirty) + "%");
+        System.out.println("Average pile size: " + average_pile_size + " beepers");
+        System.out.println("Percent dirty (piles/area): " + percent_dirty + "%");
     }
 
     public void clearCurrentPile() {
-        int pileBeepers = 0;
+        double pileBeepers = 0;
         if (roomba.nextToABeeper()) {
             total_piles++;
 
@@ -110,3 +110,4 @@ public class Roomba implements Directions {
         }
     }
 }
+
