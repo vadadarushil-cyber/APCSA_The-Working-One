@@ -11,7 +11,7 @@ public class Roomba implements Directions {
     }
 
     private Robot roomba;
-
+//set to doubles to get decimals 
     double total_piles = 0;
     double largest_pile = 0;
     double largest_pile_x = 0;
@@ -25,11 +25,12 @@ public class Roomba implements Directions {
         World.readWorld(worldName);
         World.setVisible(true);
         World.setDelay(0);
+        //make the world faster
 
         boolean done = false;
-        clearCurrentPile();
+        clearCurrentPile();//use of my method
 
-        while (!done) {
+        while (!done) {//not done
             if (roomba.frontIsClear()) {
                 roomba.move();
                 totalArea++;
@@ -62,7 +63,9 @@ public class Roomba implements Directions {
         }
 
         roomba.turnOff();
+        //we have to turn off the robot so it doesn't crash
 
+        //we have to find the avg's 
         double average_pile_size = 0;
         if (total_piles > 0) {
             average_pile_size = totalBeepers / total_piles;
@@ -72,7 +75,7 @@ public class Roomba implements Directions {
         if (totalArea > 0) {
             percent_dirty = ( total_piles / totalArea) * 100;
         }
-
+        //finally we print it out
         System.out.println("Area of the room: " + totalArea + " spaces");
         System.out.println("Number of piles: " + total_piles);
         System.out.println("Total number of beepers collected: " + totalBeepers);
