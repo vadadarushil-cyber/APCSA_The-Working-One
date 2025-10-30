@@ -2,76 +2,74 @@ package piglatin;
 
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Book {
+
     private String title;
-    private ArrayList<String> text = new ArrayList<String>();
+    private ArrayList<String> lines = new ArrayList<>();
 
-    Book() {
-        // Empty book - no code needed here.
-    }
+    Book() {}
 
-    // Helper to debug code
-    // Prints out a range of lines from a book
-    public void printlines(int start, int length) {
-        System.out.println("Lines " + start + " to " + (start + length) + " of book: " + title);
-        for (int i = start; i < start + length; i++) {
-            if (i < text.size()) {
-                System.out.println(i + ": " + text.get(i));
-            } else {
-                System.out.println(i + ": line not in book.");
-            }
-        }
-    }
+    String getTitle() { return title; }
+    void setTitle(String t) { title = t; }
+    String getLine(int i) { return lines.get(i); }
+    int getLineCount() { return lines.size(); }
+    void appendLine(String line) { lines.add(line); }
 
-    String getTitle() {
-        return title;
-    }
-
-    void setTitle(String title) {
-        this.title = title;
-    }
-
-    String getLine(int lineNumber) {
-        return text.get(lineNumber);
-    }
-
-    int getLineCount() {
-        return text.size();
-    }
-
-    void appendLine(String line) {
-        text.add(line);
-    }
-
-    public void readFromString(String title, String string) {
-        // load a book from an input string.
-        this.title = title;
-
-        // TODO: use Scanner to populate the book
-        // use: text.add(line) to add a line to the book.
-    }
-
-    public void readFromUrl(String title, String url) {
-        // load a book from a URL.
-        // https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html
-        this.title = title;
+    // Read all lines from a URL
+    public void readFromUrl(String t, String link) {
+        title = t;
+        BufferedReader reader = null;
 
         try {
-            URL bookUrl = URI.create(url).toURL();
-            // TODO: use Scanner to populate the book
-            // Scanner can open a file on a URL like this:
-            // Scanner(bookUrl.openStream())
-            // use: text.add(line) to add a line to the book.
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            // Check if the input is a real URL or just text
+            if (link.startsWith("http")) {
+                URL web = new URL(link);
+                InputStream stream = web.openStream();
+                InputStreamReader isr = new InputStreamReader(stream, "UTF-8");
+                reader = new BufferedReader(isr);
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+                System.out.println("Book read from URL");
+            } else {
+                // Treat link as plain text (e.g. "Dog\nCat\nMouse")
+                String[] parts = link.split("\n");
+                for (String line : parts) {
+                    lines.add(line);
+                }
+                System.out.println("Book read from text input");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading book: " + e.getMessage());
+        } finally {
+            try {
+                if (reader != null) reader.close();
+            } catch (Exception ignore) {}
         }
     }
 
-    void writeToFile(String name) {
-        // TODO: Add code here to write the contents of the book to a file.
-        // Must write to file using provided name.
+    // ✅ Print specific lines
+    public void printLines(int start, int end) {
+        for (int i = start; i <= end && i < lines.size(); i++) {
+            System.out.println(lines.get(i));
+        }
+    }
+
+    // Write all lines to file
+    void writeToFile(String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+            System.out.println("Book written to " + fileName);
+        } catch (Exception e) {
+            System.out.println("Error writing book: " + e.getMessage());
+        }
     }
 }
