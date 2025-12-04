@@ -6,7 +6,7 @@ public class App {
     {
         // GameOfLife g = new GameOfLife(7, 7);
 
-        // int[][] data = {
+        // int[][] data = {//THUIS MAKES SENSE 
         //     { 0, 1, 0},
         //     { 0, 0, 1},
         //     { 1, 1, 1 }
