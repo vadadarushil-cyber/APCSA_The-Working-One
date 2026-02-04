@@ -23,8 +23,11 @@ public class Main {
     public static int[] randomArray(int length)
     {
         // TODO: make this return an actual random array of the provided length.
-        int[] a = {10, 5, 3, 2};
+        int [] a = new int[length];
+                for (int i = 0; i < a.length; i++) {
+            a[i] = (int)(Math.random() * 1000);
+        }
+
         return a;
     }
-
 }
