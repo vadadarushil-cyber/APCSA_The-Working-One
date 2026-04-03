@@ -2,28 +2,11 @@ package tower;
 
 public class TowerModel {
 
-    // 2d array storing game state
     private IntegerStack[] towers;
-
-    // Final tower height
     private int towerHeight = 0;
-
-    // Debug metrics
     private int printCounter = 0;
     private int moveCounter = 0;
 
-    /* This class implements a model of a tower of Hanoi game.
-
-        |    |    |
-        =    |    |
-       ===   |    |
-      =====  |    |
-     ------------------
-        0    1    2
-
-     Example of a game of height three in the starting position.
-
-    */
     public TowerModel(int height)
     {
         towerHeight = height;
@@ -38,21 +21,29 @@ public class TowerModel {
         }
     }
 
-    // get the total number of disks
     public int height()
     {
         return towerHeight;
     }
 
-
     // Move one disk from the source stack to the destination stack.
     public void move(int source, int destination)
     {
+        IntegerStack from = towers[source];
+        IntegerStack to = towers[destination];
+
+        int movingDisk = from.peek();
+        if (movingDisk == 0) return; // nothing to move
+
+        int topDest = to.peek();
+        if (topDest != 0 && movingDisk > topDest) return; // illegal move
+
+        from.pop();
+        to.push(movingDisk);
+
         System.out.println("Move #" + ++moveCounter + " from " + source + " to " + destination);
-        // TODO!!
     }
 
-    // Helper method to nicely print the current model state.
     public void print()
     {
         System.out.print("Print #" + ++printCounter + " Towers of Hanoi\n");
@@ -77,7 +68,6 @@ public class TowerModel {
         System.out.println();
     }
 
-    // Test instrumentation
     public IntegerStack[] getTowers()
     {
         return towers;
